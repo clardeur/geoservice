@@ -1,6 +1,7 @@
 package com.example.geoservice.domain;
 
-import com.google.common.base.Objects;
+
+import java.util.Objects;
 
 public class City {
 
@@ -32,38 +33,27 @@ public class City {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        City city = (City) o;
-
-        if (id != null ? !id.equals(city.id) : city.id != null) {
-            return false;
-        }
-        if (name != null ? !name.equals(city.name) : city.name != null) {
-            return false;
-        }
-
-        return true;
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final City other = (City) obj;
+        return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name);
     }
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                      .add("id", id)
-                      .add("name", name)
-                      .toString();
+        return com.google.common.base.Objects.toStringHelper(this)
+                .add("id", id)
+                .add("name", name)
+                .toString();
     }
 }
