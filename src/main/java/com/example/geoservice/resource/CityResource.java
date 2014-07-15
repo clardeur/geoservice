@@ -24,7 +24,7 @@ public class CityResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/{id:[0-9]+}")
     public Response get(@PathParam("id") String id) {
         return Response.ok(repository.findById(parseLong(id))).build();
     }
