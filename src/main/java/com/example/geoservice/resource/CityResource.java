@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import com.example.geoservice.monitoring.Timed;
 import com.example.geoservice.repository.CityRepository;
 
 @Path("/city")
@@ -24,6 +25,7 @@ public class CityResource {
     }
 
     @GET
+    @Timed
     @Path("/{id:[0-9]+}")
     public Response get(@PathParam("id") String id) {
         return Response.ok(repository.findById(parseLong(id))).build();

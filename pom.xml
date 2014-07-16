@@ -16,15 +16,25 @@
         <java.version>1.8</java.version>
 
         <!-- Runtime -->
+        <servlet.version>3.1.0</servlet.version>
         <jersey.version>2.10.1</jersey.version>
         <guava.version>17.0</guava.version>
 
         <!-- Test -->
         <junit.version>4.11</junit.version>
         <assertj-core.version>1.6.1</assertj-core.version>
+        <metrics.version>3.0.2</metrics.version>
+        <mockito.version>1.9.5</mockito.version>
     </properties>
 
     <dependencies>
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+        </dependency>
+        
         <!-- Jersey -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -42,6 +52,18 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <!-- Metrics -->
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-servlets</artifactId>
+            <version>${metrics.version}</version>
         </dependency>
         
         <!-- Test -->
@@ -62,6 +84,11 @@
             <artifactId>assertj-core</artifactId>
             <version>${assertj-core.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
         </dependency>
     </dependencies>
 
