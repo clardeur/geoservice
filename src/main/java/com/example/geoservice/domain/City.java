@@ -34,19 +34,17 @@ public class City {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
             return false;
-        }
-        final City other = (City) obj;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.name, other.name);
+
+        return Objects.equals(this.id, ((City) obj).id);
     }
 
     @Override

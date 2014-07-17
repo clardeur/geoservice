@@ -3,6 +3,7 @@ package com.example.geoservice.resource;
 import static java.lang.Long.parseLong;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -27,6 +28,7 @@ public class CityResource {
     @GET
     @Timed
     @Path("/{id:[0-9]+}")
+    @RolesAllowed("USER")
     public Response get(@PathParam("id") String id) {
         return Response.ok(repository.findById(parseLong(id))).build();
     }
