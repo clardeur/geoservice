@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.Sets;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Principal {
 
     private Long id;
