@@ -1,22 +1,63 @@
 package com.example.geoservice.repository;
 
-import java.util.Map;
-import java.util.Optional;
+import javax.inject.Inject;
 
 import com.example.geoservice.domain.City;
-import com.example.geoservice.exception.ResourceNotFoundException;
-import com.google.common.collect.ImmutableMap;
 
 public class CityRepository {
 
-    private Map<Long, City> cities = ImmutableMap.<Long, City>builder()
-                                         .put(1L, new City(1L, "Paris"))
-                                         .put(2L, new City(2L, "Lille"))
-                                         .put(3L, new City(3L, "Montpellier"))
-                                         .build();
+    private Database database;
+
+    @Inject
+    public CityRepository(Database database) {
+        this.database = database;
+    }
+
+    public Long insert(City city) {
+        return database.getConnection().withHandle(
+                handle -> handle.createStatement("insert into city(name) values (:name)")
+                                .bind("name", city.getName())
+                                .executeAndReturnGeneratedKeys((index, r, ctx) -> {
+                                    Long id = r.getLong(1);
+                                    city.setId(id);
+                                    return id;
+                                }).first()
+        );
+    }
+
+    public Integer update(City city) {
+        return database.getConnection().withHandle(
+                handle -> handle.createStatement("update city set name = :name where id = :id")
+                                .bind("id", city.getId())
+                                .bind("name", city.getName())
+                                .execute()
+        );
+    }
+
+    public void delete(Long id) {
+        database.getConnection().withHandle(
+                handle -> handle.createStatement("delete from city where id = :id")
+                                .bind("id", id)
+                                .execute()
+        );
+    }
 
     public City findById(Long id) {
-        return Optional.ofNullable(cities.get(id))
-                       .orElseThrow(ResourceNotFoundException::new);
+        return database.getConnection().withHandle(
+                handle -> handle.createQuery("select * from city where id = :id")
+                                .bind("id", id)
+                                .map((index, r, ctx) -> new City(r.getLong("id"), r.getString("name")))
+                                .first()
+        );
+    }
+
+    public void createTable() {
+        database.getConnection().withHandle(
+                handle -> handle.createStatement(
+                        "create table city (" +
+                                "id bigint auto_increment primary key, " +
+                                "name varchar(100))")
+                                .execute()
+        );
     }
 }

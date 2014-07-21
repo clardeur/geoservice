@@ -6,17 +6,25 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
+import com.example.geoservice.domain.City;
+import com.example.geoservice.exception.ResourceNotFoundException;
 import com.example.geoservice.monitoring.Timed;
 import com.example.geoservice.repository.CityRepository;
 
 @Path("/city")
 @Produces(APPLICATION_JSON)
 public class CityResource {
+
+    @Context
+    UriInfo uriInfo;
 
     private CityRepository repository;
 
@@ -30,6 +38,20 @@ public class CityResource {
     @Path("/{id:[0-9]+}")
     @RolesAllowed("USER")
     public Response get(@PathParam("id") String id) {
-        return Response.ok(repository.findById(parseLong(id))).build();
+        City city = repository.findById(parseLong(id));
+        if (city == null) {
+            throw new ResourceNotFoundException();
+        }
+        return Response.ok(city).build();
+    }
+
+    @POST
+    @Timed
+    public Response create(City city) {
+        repository.insert(city);
+
+        return Response.created(uriInfo.getRequestUriBuilder().path(city.getId().toString()).build())
+                       .entity(city)
+                       .build();
     }
 }
