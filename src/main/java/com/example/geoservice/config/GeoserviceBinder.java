@@ -2,9 +2,11 @@ package com.example.geoservice.config;
 
 import javax.inject.Singleton;
 
+import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.api.InterceptionService;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
+import com.example.geoservice.monitoring.DatabaseHealthCheck;
 import com.example.geoservice.repository.CityRepository;
 import com.example.geoservice.repository.Database;
 import com.example.geoservice.security.SessionRepository;
@@ -22,5 +24,8 @@ public class GeoserviceBinder extends AbstractBinder {
 
         // Interceptors
         bind(GeoserviceInterception.class).to(InterceptionService.class).in(Singleton.class);
+
+        // Monitoring
+        bind(DatabaseHealthCheck.class).to(DatabaseHealthCheck.class).in(Immediate.class);
     }
 }

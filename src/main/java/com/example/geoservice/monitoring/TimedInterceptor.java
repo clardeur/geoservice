@@ -1,6 +1,6 @@
 package com.example.geoservice.monitoring;
 
-import static com.example.geoservice.monitoring.MetricsServletListener.registry;
+import static com.example.geoservice.monitoring.MetricsServletListener.metrics;
 import static com.google.common.base.Strings.emptyToNull;
 
 import java.lang.reflect.Method;
@@ -18,7 +18,7 @@ public class TimedInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
 
-        Timer timer = registry.timer(getMetricName(method.getAnnotation(Timed.class), method));
+        Timer timer = metrics.timer(getMetricName(method.getAnnotation(Timed.class), method));
 
         final Timer.Context ctx = timer.time();
         try {

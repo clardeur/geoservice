@@ -1,6 +1,6 @@
 package com.example.geoservice.repository;
 
-import static com.example.geoservice.monitoring.MetricsServletListener.registry;
+import static com.example.geoservice.monitoring.MetricsServletListener.metrics;
 
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.skife.jdbi.v2.DBI;
@@ -15,7 +15,11 @@ public class Database {
         JdbcConnectionPool connectionPool = JdbcConnectionPool.create("jdbc:h2:mem:test", "user", "");
         connectionPool.setMaxConnections(5);
         this.connection = new DBI(connectionPool);
-        this.connection.setTimingCollector(new InstrumentedTimingCollector(registry));
+        this.connection.setTimingCollector(new InstrumentedTimingCollector(metrics));
+    }
+
+    public Database(DBI connection) {
+        this.connection = connection;
     }
 
     public DBI getConnection() {

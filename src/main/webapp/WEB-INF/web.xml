@@ -5,6 +5,15 @@
          version="3.0">
 
     <servlet>
+        <servlet-name>health-check</servlet-name>
+        <servlet-class>com.codahale.metrics.servlets.HealthCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>health-check</servlet-name>
+        <url-pattern>/health-check</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>metrics</servlet-name>
         <servlet-class>com.codahale.metrics.servlets.MetricsServlet</servlet-class>
     </servlet>
@@ -13,9 +22,14 @@
         <url-pattern>/metrics</url-pattern>
     </servlet-mapping>
 
-    <listener>
-        <listener-class>com.example.geoservice.monitoring.MetricsServletListener</listener-class>
-    </listener>
+    <servlet>
+        <servlet-name>ping</servlet-name>
+        <servlet-class>com.codahale.metrics.servlets.PingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ping</servlet-name>
+        <url-pattern>/ping</url-pattern>
+    </servlet-mapping>
 
     <security-constraint>
         <web-resource-collection>
