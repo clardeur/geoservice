@@ -19,7 +19,6 @@ public class CityRepositoryTest {
     public static void setUpStatic() {
         db = new Database();
         repository = new CityRepository(db);
-        repository.createTable();
     }
 
     @After
@@ -34,7 +33,6 @@ public class CityRepositoryTest {
             handle.execute("drop table city");
         }
     }
-
 
     @Test
     public void should_insert_a_city() throws Exception {

@@ -33,7 +33,6 @@ public class CityResourceTest extends JerseyTest {
     public static void setUpStatic() {
         db = new Database();
         repository = new CityRepository(db);
-        repository.createTable();
     }
 
     @After

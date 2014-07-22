@@ -11,6 +11,7 @@ public class CityRepository {
     @Inject
     public CityRepository(Database database) {
         this.database = database;
+        createTableIfNotExists();
     }
 
     public Long insert(City city) {
@@ -51,10 +52,10 @@ public class CityRepository {
         );
     }
 
-    public void createTable() {
+    public void createTableIfNotExists() {
         database.getConnection().withHandle(
                 handle -> handle.createStatement(
-                        "create table city (" +
+                        "create table if not exists city (" +
                                 "id bigint auto_increment primary key, " +
                                 "name varchar(100))")
                                 .execute()

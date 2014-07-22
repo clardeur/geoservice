@@ -79,6 +79,11 @@
             <artifactId>metrics-servlets</artifactId>
             <version>${metrics.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-jdbi</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
