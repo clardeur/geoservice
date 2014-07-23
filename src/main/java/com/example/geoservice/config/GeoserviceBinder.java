@@ -14,6 +14,9 @@ public class GeoserviceBinder extends ServletModule {
 
     @Override
     protected void configureServlets() {
+        // Properties
+        bind(Properties.class).asEagerSingleton();
+
         // Persistence
         bind(Database.class).in(Singleton.class);
 

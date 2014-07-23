@@ -9,6 +9,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
+
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
@@ -16,6 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skife.jdbi.v2.Handle;
 
+import com.example.geoservice.config.Properties;
 import com.example.geoservice.domain.City;
 import com.example.geoservice.repository.CityRepository;
 import com.example.geoservice.repository.Database;
@@ -27,8 +30,8 @@ public class CityResourceTest extends JerseyTest {
     private static CityRepository repository;
 
     @BeforeClass
-    public static void setUpStatic() {
-        db = new Database();
+    public static void setUpStatic() throws IOException {
+        db = new Database(new Properties());
         repository = new CityRepository(db);
     }
 

@@ -2,12 +2,15 @@ package com.example.geoservice.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skife.jdbi.v2.Handle;
 
+import com.example.geoservice.config.Properties;
 import com.example.geoservice.domain.City;
 
 public class CityRepositoryTest {
@@ -16,8 +19,8 @@ public class CityRepositoryTest {
     private static CityRepository repository;
 
     @BeforeClass
-    public static void setUpStatic() {
-        db = new Database();
+    public static void setUpStatic() throws IOException {
+        db = new Database(new Properties());
         repository = new CityRepository(db);
     }
 
