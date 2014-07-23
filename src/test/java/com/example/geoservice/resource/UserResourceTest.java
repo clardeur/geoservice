@@ -11,16 +11,21 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
-import com.example.geoservice.config.GeoserviceBinder;
 import com.example.geoservice.domain.User;
+import com.example.geoservice.security.SessionRepository;
 import com.example.geoservice.security.TokenSecurityRequestFilter;
+import com.example.geoservice.test.Provider;
 
 public class UserResourceTest extends JerseyTest {
 
+    SessionRepository sessionRepository;
+
     @Override
     protected Application configure() {
+        this.sessionRepository = new SessionRepository();
+
         return new ResourceConfig(UserResource.class)
-                .register(new GeoserviceBinder())
+                .register(new Provider<>(sessionRepository))
                 .register(new TokenSecurityRequestFilter());
     }
 

@@ -22,8 +22,7 @@ public class CityRepository {
                                     Long id = r.getLong(1);
                                     city.setId(id);
                                     return id;
-                                }).first()
-        );
+                                }).first());
     }
 
     public Integer update(City city) {
@@ -31,16 +30,14 @@ public class CityRepository {
                 handle -> handle.createStatement("update city set name = :name where id = :id")
                                 .bind("id", city.getId())
                                 .bind("name", city.getName())
-                                .execute()
-        );
+                                .execute());
     }
 
     public void delete(Long id) {
         database.getConnection().withHandle(
                 handle -> handle.createStatement("delete from city where id = :id")
                                 .bind("id", id)
-                                .execute()
-        );
+                                .execute());
     }
 
     public City findById(Long id) {
@@ -48,8 +45,7 @@ public class CityRepository {
                 handle -> handle.createQuery("select * from city where id = :id")
                                 .bind("id", id)
                                 .map((index, r, ctx) -> new City(r.getLong("id"), r.getString("name")))
-                                .first()
-        );
+                                .first());
     }
 
     public void createTableIfNotExists() {
@@ -58,7 +54,6 @@ public class CityRepository {
                         "create table if not exists city (" +
                                 "id bigint auto_increment primary key, " +
                                 "name varchar(100))")
-                                .execute()
-        );
+                                .execute());
     }
 }

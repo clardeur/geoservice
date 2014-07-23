@@ -11,22 +11,19 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skife.jdbi.v2.Handle;
 
-import com.example.geoservice.config.GeoserviceBinder;
 import com.example.geoservice.domain.City;
 import com.example.geoservice.repository.CityRepository;
 import com.example.geoservice.repository.Database;
+import com.example.geoservice.test.Provider;
 
 public class CityResourceTest extends JerseyTest {
 
     private static Database db;
-
     private static CityRepository repository;
 
     @BeforeClass
@@ -43,18 +40,10 @@ public class CityResourceTest extends JerseyTest {
         }
     }
 
-    @AfterClass
-    public static void tearDownStatic() throws Exception {
-        try (Handle handle = db.getConnection().open()) {
-            handle.execute("drop table city");
-        }
-    }
-
     @Override
     protected Application configure() {
-        enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-        return new ResourceConfig(CityResource.class).register(new GeoserviceBinder());
+        return new ResourceConfig(CityResource.class)
+                .register(new Provider<>(repository));
     }
 
     @Test
