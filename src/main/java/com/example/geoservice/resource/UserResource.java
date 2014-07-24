@@ -5,7 +5,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 import javax.inject.Inject;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -17,6 +19,8 @@ import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 import java.util.UUID;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.example.geoservice.domain.Role;
 import com.example.geoservice.domain.User;
 import com.example.geoservice.monitoring.Timed;
@@ -24,6 +28,7 @@ import com.example.geoservice.security.Session;
 import com.example.geoservice.security.SessionRepository;
 
 @Path("/users")
+@Produces(APPLICATION_JSON)
 public class UserResource {
 
     @Context
@@ -39,15 +44,15 @@ public class UserResource {
     @GET
     @Timed
     @Path("/current")
-    @Produces(APPLICATION_JSON)
     public Response getCurrentUser() {
         return Response.ok(securityContext.getUserPrincipal()).build();
     }
 
-    @GET
-    @Path("/login")
-    @Produces(TEXT_PLAIN)
-    public Response login() {
+    @POST
+    @Path("/authenticate")
+    public Response login(
+            @NotBlank @FormParam("username") String username,
+            @NotBlank @FormParam("password") String password) {
         String authToken = UUID.randomUUID().toString();
 
         // TODO: fetch from repository
@@ -65,7 +70,6 @@ public class UserResource {
 
     @GET
     @Path("/logout")
-    @Produces(TEXT_PLAIN)
     public Response logout() {
         Principal principal = securityContext.getUserPrincipal();
 
